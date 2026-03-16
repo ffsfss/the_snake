@@ -36,13 +36,7 @@ clock = pygame.time.Clock()
 class GameObject(ABC):
     """Основной абстрактный класс, объед. все объекты игры."""
 
-    def __new__(cls, *args, **kwargs):
-        """Проверка для тестов."""
-        if cls is GameObject:
-            return super().__new__(cls)
-        return super().__new__(cls)
-
-    def __init__(self, position=None, body_color=BOARD_BACKGROUND_COLOR):
+    def __init__(self, position=(0, 0), body_color=BOARD_BACKGROUND_COLOR):
         self.position = position
         self.body_color = body_color
 
