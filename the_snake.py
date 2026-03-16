@@ -1,5 +1,5 @@
 import random
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import pygame
 
@@ -40,7 +40,6 @@ class GameObject(ABC):
         self.position = position
         self.body_color = body_color
 
-    @abstractmethod
     def draw(self):
         """Абстр. метод отрисовки обязательный для каждого игрового объекта."""
         pass
@@ -70,8 +69,11 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Класс объекта Змейка."""
 
-    def __init__(self, position, body_color=SNAKE_COLOR):
+    def __init__(self, position=None, body_color=SNAKE_COLOR):
         """Конструктор Змейки."""
+        if position is None:
+            position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
         super().__init__(position, body_color)
         self.length = 1
         self.positions = [position]
