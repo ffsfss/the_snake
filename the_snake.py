@@ -1,5 +1,4 @@
 import random
-from abc import ABC
 
 import pygame
 
@@ -33,7 +32,7 @@ clock = pygame.time.Clock()
 """Все классы игры:"""
 
 
-class GameObject(ABC):
+class GameObject():
     """Основной абстрактный класс, объед. все объекты игры."""
 
     def __init__(self, position=(0, 0), body_color=BOARD_BACKGROUND_COLOR):
