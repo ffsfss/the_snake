@@ -1,5 +1,5 @@
 import random
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import pygame
 
@@ -40,6 +40,7 @@ class GameObject(ABC):
         self.position = position
         self.body_color = body_color
 
+    @abstractmethod
     def draw(self):
         """Абстр. метод отрисовки обязательный для каждого игрового объекта."""
         pass
