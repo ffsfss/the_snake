@@ -1,4 +1,3 @@
-from random import randint
 from abc import ABC, abstractmethod
 
 import pygame
@@ -32,48 +31,62 @@ clock = pygame.time.Clock()
 
 
 """Все классы игры:"""
+
+
 class GameObject(ABC):
     """Основной абстрактный класс, объед. все объекты игры."""
+
     def __init__(self, position, body_color):
         self.position = position
         self.body_color = body_color
-    
+
     @abstractmethod
     def draw(self):
+        """Абстр. метод отрисовки обязательный для каждого игрового объекта."""
         pass
+
 
 class Apple(GameObject):
     """Класс объекта Яблоко."""
-    def __init__(self, body_color = APPLE_COLOR):
-        super().__init__((0,0), body_color)
+
+    def __init__(self, body_color=APPLE_COLOR):
+        """Конструктор Яблока."""
+        super().__init__((0, 0), body_color)
         self.randomize_position()
 
     def randomize_position(self):
+        """Определяем новую позицию для яблока рандомно."""
         rand_row = random.randint(0, GRID_HEIGHT - 1)
         rand_col = random.randint(0, GRID_WIDTH - 1)
         self.position = (rand_col * GRID_SIZE, rand_row * GRID_SIZE)
 
     def draw(self):
+        """Отрисовка Яблока."""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
+
 class Snake(GameObject):
     """Класс объекта Змейка."""
-    def __init__(self, position, body_color = SNAKE_COLOR):
+
+    def __init__(self, position, body_color=SNAKE_COLOR):
+        """Конструктор Змейки."""
         super().__init__(position, body_color)
         self.length = 1
         self.positions = [position]
         self.direction = RIGHT
         self.next_direction = None
         self.last = None
-    
+
     def update_direction(self):
+        """Передаем след. направление Змейки."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self):
+        """Движение Змейки на одну позицию."""
         self.update_direction()
 
         head_x, head_y = self.positions[0]
@@ -88,6 +101,7 @@ class Snake(GameObject):
             self.last = None
 
     def draw(self):
+        """Отрисовка Змейки."""
         for position in self.positions[:-1]:
             rect = (pygame.Rect(position, (GRID_SIZE, GRID_SIZE)))
             pygame.draw.rect(screen, self.body_color, rect)
@@ -102,17 +116,20 @@ class Snake(GameObject):
             pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def get_head_position(self):
-        return  self.positions[0]
+        """Координаты головы Змейки."""
+        return self.positions[0]
 
     def reset(self):
+        """Сбрасываем Змейку полностью."""
         self.length = 1
         self.positions = [self.position]
         self.direction = RIGHT
         self.next_direction = None
         self.last = None
 
+
 def handle_keys(game_object):
-    """Обработка нажатий (взято из задания)."""
+    """Обработка действий пользователя."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -128,20 +145,15 @@ def handle_keys(game_object):
                 game_object.next_direction = RIGHT
 
 
-
-
-
-
 def main():
+    """Инициализируем PyGame"""
     pygame.init()
 
     snake = Snake((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), SNAKE_COLOR)
     apple = Apple(APPLE_COLOR)
-    
-    """Беск. цикл с игрой:"""
+
     while True:
         clock.tick(SPEED)
-        
         handle_keys(snake)
         snake.update_direction()
         snake.move()
@@ -155,9 +167,10 @@ def main():
 
         if snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-        
+
         head_x, head_y = snake.get_head_position()
-        if head_x < 0 or head_x >= SCREEN_WIDTH or head_y < 0 or head_y >= SCREEN_HEIGHT:
+        if (head_x < 0 or head_x >= SCREEN_WIDTH
+                or head_y < 0 or head_y >= SCREEN_HEIGHT):
             snake.reset()
 
         screen.fill(BOARD_BACKGROUND_COLOR)
