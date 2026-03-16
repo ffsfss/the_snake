@@ -42,7 +42,7 @@ class GameObject(ABC):
             return super().__new__(cls)
         return super().__new__(cls)
 
-    def __init__(self, position, body_color):
+    def __init__(self, position=None, body_color=BOARD_BACKGROUND_COLOR):
         self.position = position
         self.body_color = body_color
 
