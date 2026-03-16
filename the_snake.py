@@ -1,6 +1,7 @@
-import pygame
 import random
 from abc import ABC, abstractmethod
+
+import pygame
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
